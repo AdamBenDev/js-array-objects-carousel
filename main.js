@@ -83,3 +83,28 @@ const startAutoplay = (direction) => {
       autoplayButton.innerText = 'RESUME AUTOPLAY';
     }
   };
+
+  
+// ! OPERAZIONI PRELIMINARI
+// Recupero la galleria
+const gallery = document.querySelector('.gallery');
+const thumbGallery = document.getElementById('thumbnails');
+
+let galleryElements = '';
+let thumbsElements = '';
+for (let i = 0; i < source.length; i++){
+  const img = `<img src="${source[i].image}" alt="image_${source[i]}">`;
+  thumbsElements += img;
+  galleryElements += `
+    <figure>
+    <img src="${source[i].image}" alt="${source[i].title}">
+    <figcaption>
+      <h2>${source[i].title}</h2>
+      <h4>${source[i].text}</h4>
+    </figcaption>
+  </figure>
+  `
+}
+// Stampo in pagina
+gallery.innerHTML = galleryElements;
+thumbGallery.innerHTML = thumbsElements;
