@@ -10,23 +10,23 @@ console.log('JS OK');
 // Creo un array di oggetti letterali per popolare dinamicamente il carosello
 const source = [
   {
-    image: 'img/01.webp',
+    image: 'assets/img/01.webp',
     title: 'Marvel\'s Spiderman Miles Morale',
     text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',    
   }, {
-    image: 'img/02.webp',
+    image: 'assets/img/02.webp',
     title: 'Ratchet & Clank: Rift Apart',
     text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.',
   }, {
-    image: 'img/03.webp',
+    image: 'assets/img/03.webp',
     title: 'Fortnite',
     text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.",
   }, {
-    image: 'img/04.webp',
+    image: 'assets/img/04.webp',
     title: 'Stray',
     text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city',
   }, {
-    image: 'img/05.webp',
+    image: 'assets/img/05.webp',
     title: "Marvel's Avengers",
     text: 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.',
   }
@@ -108,3 +108,72 @@ for (let i = 0; i < source.length; i++){
 // Stampo in pagina
 gallery.innerHTML = galleryElements;
 thumbGallery.innerHTML = thumbsElements;
+
+
+ // Recupero le immagini 
+ const images = document.querySelectorAll('.gallery figure');
+
+ // Recupero i thumbnails
+ const thumbs = document.querySelectorAll('#thumbnails img');
+
+ // Metto la prima immagine come active
+ let currentActiveIndex = 0;
+ images[currentActiveIndex].classList.add('active');
+
+ // Metto il primo thumbs come active
+ thumbs[currentActiveIndex].classList.add('active');
+
+ // Recupero i bottoni
+ const prevButton = document.getElementById('prev');
+ const nextButton = document.getElementById('next');
+ const autoplayButton = document.getElementById('autoplay-button');
+ const reverseAutoplay = document.getElementById('reverse-autoplay');
+
+ // ! OPERAZIONI DI AVVIO PAGINA
+ // Avvio l'autoplay
+ let autoplay;
+ let direction = 'next';
+ startAutoplay(direction);
+
+ let isPlaying = true;
+ // ! EVENTI DINAMICI
+ // Aggancio un evento al reverse autoplay
+ reverseAutoplay.addEventListener('click', () => {
+   // Stop autoplay
+   stopAutoplay(changeButton = false);
+   // Inverto la direzione
+   direction = direction === 'next' ? 'prev' : 'next';
+   // Faccio ripartire l'autoplay
+   startAutoplay(direction);
+ });
+ // Aggancio un evento al bottone autoplay
+ autoplayButton.addEventListener('click', () => {
+   isPlaying = !isPlaying;
+   if(!isPlaying){
+     autoplayButton.innerText = 'RESUME AUTOPLAY';
+     clearInterval(autoplay);
+   } else {
+     autoplayButton.innerText = 'STOP AUTOPLAY';
+     startAutoplay(direction);
+   }
+ });
+ // Aggancio l'evento all'arrow next
+ nextButton.addEventListener('click', () => {
+  stopAutoplay();
+  changePic('next');
+ });
+ // Aggancio l'evento all'arrow prev
+ prevButton.addEventListener('click', () => {
+   stopAutoplay();
+   changePic('prev');
+ });
+ // Rendo cliccabili i thumbnails 
+ for (let i = 0; i < thumbs.length; i++){
+   const thumb = thumbs[i];
+   // Aggiungo il click al singolo thumbnails
+   thumb.addEventListener('click', () => {
+     stopAutoplay();
+     changePic(i);
+   })
+ };
+
